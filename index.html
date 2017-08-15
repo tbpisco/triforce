@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TRIFORCE - WEBGL</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		html,body{
+			margin:0;
+			padding:0;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+
+</body>
+<script id="shader-vs" type="x-shader/x-vertex">
+  	attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+ 
+	uniform mat4 uMVMatrix;
+	uniform mat4 uPMatrix;
+	uniform mat4 uNMatrix;
+	 
+	uniform vec3 uLightDirection;
+	uniform vec4 uLightAmbient;
+	uniform vec4 uLightDiffuse;
+	uniform vec4 uMaterialDiffuse;
+
+	uniform bool useLighting;
+	 
+	varying vec4 vFinalColor;
+	   
+	void main(void) {
+
+		if(useLighting){
+		  //Transformed normal position
+			vec3 N = vec3(uNMatrix * vec4(aVertexNormal, 1.0));
+		   
+		   //Normalize light to calculate lambertTerm
+			vec3 L = normalize(uLightDirection);
+		   
+		   //Lambert's cosine law
+			float lambertTerm = dot(N,-L);
+		   
+		   //Ambient Term
+			vec4 Ia = uLightAmbient;
+		   
+		   //Diffuse Term
+			vec4 Id = uMaterialDiffuse * uLightDiffuse * lambertTerm;
+	   
+	   		vFinalColor = Ia + Id;
+	    	vFinalColor.a = 1.0;
+		} else {
+		  	vFinalColor = vec4(0.8,0.0,0.0,1.0);
+		}
+	    
+	   gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+	  
+	}
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+    
+    varying vec4 vFinalColor;
+    
+    void main(void) {
+        gl_FragColor = vFinalColor;
+    }
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.4.0/gl-matrix-min.js"></script>
+<script type="text/javascript" src="js/webgl-utils.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+</html>
