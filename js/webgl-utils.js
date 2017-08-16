@@ -7,11 +7,11 @@ var webglUtils = (function() {
         var z=2;
         
         var ns = [];
-        for(var i=0;i<vs.length;i++){ //for each vertex, initialize normal x, normal y, normal z
+        for(var i=0;i<vs.length;i++){ 
             ns[i]=0.0;
         }
         
-        for(var i=0;i<ind.length;i=i+3){ //we work on triads of vertices to calculate normals so i = i+3 (i = indices index)
+        for(var i=0;i<ind.length;i=i+3){ 
             var v1 = [];
             var v2 = [];
             var normal = [];
@@ -35,8 +35,7 @@ var webglUtils = (function() {
              }
         }
         //normalize the result
-        for(var i=0;i<vs.length;i=i+3){ //the increment here is because each vertex occurs with an offset of 3 in the array (due to x, y, z contiguous values)
-        
+        for(var i=0;i<vs.length;i=i+3){ 
             var nn=[];
             nn[x] = ns[i+x];
             nn[y] = ns[i+y];

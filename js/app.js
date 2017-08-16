@@ -241,16 +241,10 @@ var App = (function() {
 })();
 
 (function(global) {
-	
-	//application start point
 	window.addEventListener("DOMContentLoaded", startApp);
 	function startApp() {
-
 		var app = new App();
 		window.removeEventListener("DOMContentLoaded", startApp);
-		//setTimeout is used so that on mobile, the page width can be finalised
-		//before content is added, fixing a zoom issue that sometimes occurs
-		//setTimeout(function() { window.app = new GAME.gameApp(); }, 50);
 	}
 
 })(window);
