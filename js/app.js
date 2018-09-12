@@ -48,6 +48,9 @@ var App = (function() {
 		self.gl.bindBuffer(self.gl.ELEMENT_ARRAY_BUFFER, self.IBOBufferLines);
 		self.gl.bufferData(self.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(self.indices_lines), self.gl.STATIC_DRAW);
 
+		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, null);
+		self.gl.bindBuffer(self.gl.ELEMENT_ARRAY_BUFFER, null);
+		
 		renderLoop();
   
 	};
@@ -229,6 +232,9 @@ var App = (function() {
 		  self.gl.drawElements(self.gl.TRIANGLES, self.indices.length, self.gl.UNSIGNED_SHORT, 0);
 		    
 		}
+
+		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, null);
+		self.gl.bindBuffer(self.gl.ELEMENT_ARRAY_BUFFER, null);
 	};
 
 	var renderLoop = function(){
