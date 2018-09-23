@@ -3,7 +3,9 @@ var App = (function() {
 	var self;
 
 	function App(){
-        self = this;
+		self = this;
+		self.time = Date.now();
+		self.fps = 30;
         init();
     }
 
@@ -239,6 +241,7 @@ var App = (function() {
 
 	var renderLoop = function(){
 		requestAnimFrame(renderLoop);
+		if((self.time + 1000/self.fps) > Date.now()) return;
     	draw();
 	};
 

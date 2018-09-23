@@ -6,6 +6,7 @@ var App = (function() {
 
 		self = this;
 		self.time = Date.now();
+		self.fps = 30;
 		init();
 		
     }
@@ -31,20 +32,22 @@ var App = (function() {
   		self.indices = setupComplexIndices();
 		self.normals = webglUtils.calculateNormals(self.vertices, self.indices);
 		  
-		var invertVertices = [1,2,3, 4,5,6, 7,8,9];
+		var invertVertices = [1,2,3, 4,5,6, 7,8,9, 10,11,12, 13,14,15, 16,17,18];
 		for (var x = 0; x < invertVertices.length; x++){
 			self.normals[(3*invertVertices[x])-1] *= -1;
 		}
 
-		var invertVertices = [ 18,19,20,21, 22,23,24,25,  34,35,36,37];
+		var invertVertices = [ 19,20,21,22, 23,24,25,26,  35,36,37,38, 39,40,41,42];
 		for (var x = 0; x < invertVertices.length; x++){
-			self.normals[(3*invertVertices[x])-0] *= -1;
-			self.normals[(3*invertVertices[x])+1] *= -1;
+			self.normals[(3*invertVertices[x])-3] *= -1;
+			self.normals[(3*invertVertices[x])-2] *= -1;
+			self.normals[(3*invertVertices[x])-1] *= -1;
 		}
 
-		var invertVertices = [ 26,27,28,29 ];
+		var invertVertices = [ 27,28,29,30, 31,32,33,34 ];
 		for (var x = 0; x < invertVertices.length; x++){
-			self.normals[(3*invertVertices[x])+1] *= -1;
+			self.normals[(3*invertVertices[x])-2] *= -1;
+			self.normals[(3*invertVertices[x])-1] *= -1;
 		}
 		  
 		createNormalsLinesBuffer(self.vertices, self.normals);
@@ -88,19 +91,6 @@ var App = (function() {
 		self.gl.bufferData(self.gl.ARRAY_BUFFER, new Float32Array(self.normalsVertices), self.gl.STATIC_DRAW);
 
 	};
-
-	var mvPushMatrix = function() {
-		var copy = mat4.create();
-		mat4.copy(copy, self.mvMatrix);
-		self.mvMatrixStack.push(copy);
-	}
-	
-	var mvPopMatrix = function() {
-		if (self.mvMatrixStack.length == 0) {
-		  throw "Invalid popMatrix!";
-		}
-		self.mvMatrix = self.mvMatrixStack.pop();
-	}
 
 	/*
   
@@ -249,28 +239,28 @@ INTERNAL FACES
   
     var setupComplexIndices = function(){
 		return [
-				/*front*/
-				0,1,2,
-				3,4,5,
-				6,7,8,
-				/*back*/
-				9,10,11,
-				12,13,14,
-				15,16,17,
-				/*external faces*/
-				18,19,20,
-				18,20,21,
-				22,23,24,
-				24,25,22,
-				26,29,28,
-				26,28,27,
-				/*internal faces*/
-				33,30,31,
-				33,31,32,
-				34,35,36,
-				34,36,37,
-				38,41,40,
-				38,40,39
+			/*front*/
+			0,1,2,
+			3,4,5,
+			6,7,8,
+			/*back*/
+			11,10,9,
+			14,13,12,
+			17,16,15,
+			/*external faces*/
+			18,19,20,
+			18,20,21,
+			22,23,24,
+			22,24,25,
+			26,29,27,
+			29,28,27,
+			/*internal faces*/
+			30,33,31,
+			31,33,32,
+			34,35,36,
+			34,36,37,
+			38,39,40,
+			38,40,41
 		]
     };
 
@@ -289,7 +279,7 @@ INTERNAL FACES
 
 	  gl.uniform3fv(prg.uLightDirection,  [-5.0,0.0,-10.0]);
       gl.uniform4fv(prg.uLightDiffuse,  [1.0,1.0,1.0,1.0]); 
-      gl.uniform4fv(prg.uMaterialDiffuse, [0.8, 0.8, 0.0,1.0]);
+      gl.uniform4fv(prg.uMaterialDiffuse, [0.8, 0.8, 0.0, 1.0]);
 
 	};
 
@@ -338,8 +328,9 @@ INTERNAL FACES
 	    self.degreeX = self.degreeX % 360;
 
 		self.gl.clearColor(0.2, 0.3, 0.6, 1.0);
-		self.gl.clearDepth(100.0);
-	  	self.gl.enable(self.gl.DEPTH_TEST);
+		self.gl.clearDepth(1.0);
+		self.gl.enable(self.gl.DEPTH_TEST);
+		self.gl.enable(self.gl.CULL_FACE);
 		self.gl.clear(self.gl.COLOR_BUFFER_BIT | self.gl.DEPTH_BUFFER_BIT);
 		self.gl.viewport(0,0,self.canvas.width, self.canvas.height);	    
 		mat4.perspective(30, self.canvas.width / self.canvas.height, 0.1, 10000.0, self.pMatrix);
@@ -369,7 +360,9 @@ INTERNAL FACES
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.NormalBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexNormal,3,self.gl.FLOAT, false, 0,0);
 		self.gl.enableVertexAttribArray(self.prg.aVertexNormal);
-		
+
+		self.gl.cullFace(self.gl.FRONT);
+
 		self.gl.bindBuffer(self.gl.ELEMENT_ARRAY_BUFFER, self.IBOBuffer);
 		self.gl.drawElements(self.gl.TRIANGLES, self.indices.length, self.gl.UNSIGNED_SHORT, 0);
 
@@ -380,7 +373,7 @@ INTERNAL FACES
 
 	var renderLoop = function(){
 		requestAnimFrame(renderLoop);
-		if((self.time + 1000/30) > Date.now()) return;
+		if((self.time + 1000/self.fps) > Date.now()) return;
 		draw();
 		self.time = Date.now();
 	};
