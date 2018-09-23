@@ -325,7 +325,7 @@ INTERNAL FACES
 
 	var setupUniformAndAttributes = function(prg,gl){
 
-	  prg.vertexPosition   	= gl.getAttribLocation(prg, "aVertexPosition");
+	  prg.aVertexPosition  	= gl.getAttribLocation(prg, "aVertexPosition");
 	  prg.aVertexNormal    	= gl.getAttribLocation(prg, "aVertexNormal");
 	  prg.aVertexColor		= gl.getAttribLocation(prg, "aVertexColor");
 
@@ -416,7 +416,7 @@ INTERNAL FACES
 	var renderObject = function(backFaceCulling){
 
 
-		self.gl.enableVertexAttribArray(self.prg.vertexPositionAttribute);
+		self.gl.enableVertexAttribArray(self.prg.aVertexPosition);
 		self.gl.enableVertexAttribArray(self.prg.aVertexNormal);
 
 		mat4.identity(self.mvMatrix);
@@ -435,7 +435,7 @@ INTERNAL FACES
 
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.VBOBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexPosition, 3, self.gl.FLOAT, false, 0, 0);
-		self.gl.enableVertexAttribArray(self.prg.vertexPositionAttribute);
+		self.gl.enableVertexAttribArray(self.prg.aVertexPosition);
 
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.NormalBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexNormal,3,self.gl.FLOAT, false, 0,0);
@@ -462,7 +462,7 @@ INTERNAL FACES
 
 	var renderObjectNormal = function(){
 
-		self.gl.enableVertexAttribArray(self.prg.vertexPositionAttribute);
+		self.gl.enableVertexAttribArray(self.prg.aVertexPosition);
 		self.gl.enableVertexAttribArray(self.prg.aVertexNormal);
 
 		mat4.identity(self.mvMatrix);
@@ -485,7 +485,7 @@ INTERNAL FACES
 
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.normalVerticesBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexPosition, 3, self.gl.FLOAT, false, 0, 0);
-		self.gl.enableVertexAttribArray(self.prg.vertexPositionAttribute);	
+		self.gl.enableVertexAttribArray(self.prg.aVertexPosition);	
 
 		self.gl.drawArrays(self.gl.LINES, 0, self.normalsVertices.length/6);
 

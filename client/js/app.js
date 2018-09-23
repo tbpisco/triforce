@@ -112,7 +112,7 @@ var App = (function() {
 
 	var setupUniformAndAttributes = function(prg,gl){
 
-	  prg.vertexPosition   = gl.getAttribLocation(prg, "aVertexPosition");
+	  prg.aVertexPosition   = gl.getAttribLocation(prg, "aVertexPosition");
 	  prg.aVertexNormal    = gl.getAttribLocation(prg, "aVertexNormal");
 
 	  prg.uPMatrix   	   = gl.getUniformLocation(prg, "uPMatrix");
@@ -198,7 +198,7 @@ var App = (function() {
 
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.VBOBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexPosition, 3, self.gl.FLOAT, false, 0, 0);
-		self.gl.enableVertexAttribArray(self.prg.vertexPositionAttribute);
+		self.gl.enableVertexAttribArray(self.prg.aVertexPosition);
 
 		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.NormalBuffer);
 		self.gl.vertexAttribPointer(self.prg.aVertexNormal,3,self.gl.FLOAT, false, 0,0);
@@ -211,8 +211,7 @@ var App = (function() {
 	    mat4.translate(self.mvMatrix,self.mvMatrix, [0.0, 0.0, -5.0]); 
 	    mat4.rotate(self.mvMatrix,self.mvMatrix, self.degreeY * Math.PI/180, [0,1,0]);
 	    mat4.rotate(self.mvMatrix,self.mvMatrix, self.degreeX * Math.PI/180, [1,0,0]);
-	    
-	 
+
 	    
 	    self.gl.uniformMatrix4fv(self.prg.uMVMatrix, false, self.mvMatrix);
 	    self.gl.uniformMatrix4fv(self.prg.uPMatrix, false, self.pMatrix);
