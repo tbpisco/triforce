@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TRIFORCE - WEBGL</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		html,body{
+			margin:0;
+			padding:0;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+
+</body>
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec4 aVertexColor;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+
+    uniform vec3 uLightDirection;
+    uniform vec4 uLightDiffuse;
+    uniform vec4 uMaterialDiffuse;
+
+    varying vec4 vFinalColor;
+
+    void main(void) {
+
+       vec3 N = normalize(vec3(uNMatrix * vec4(aVertexNormal, 1.0)));
+       vec3 L = normalize(uLightDirection);
+
+       float lambertTerm = dot(N,-L);
+
+       //vFinalColor = uMaterialDiffuse * aVertexColor * lambertTerm;
+       vFinalColor = uMaterialDiffuse * uLightDiffuse * lambertTerm;
+       vFinalColor.a = 0.5;
+
+       gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+    }
+
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+    
+    varying vec4 vFinalColor;
+    
+    void main(void) {
+        gl_FragColor = vFinalColor;
+    }
+</script>
+<script type="text/javascript" src="js/gl-matrix-min.js"></script>
+<script type="text/javascript" src="js/webgl-utils.js"></script>
+<script type="text/javascript" src="js/lambertian/app_face_colouring.js"></script>
+</html>
