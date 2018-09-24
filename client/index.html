@@ -39,16 +39,29 @@
 		}
 
 		iframe{
+			width: 0;
+			height: 0;
+
+			min-width: 100%;
+			min-height: 100%; 
+			border: none;
+		}
+
+		.iframe--placeholder{
 			width: 90%;
     		margin: 0 5%;
-			border: none;
+			
 			height: 80vh;
 		}
 
 	</style>
 </head>
 <body>
-	<iframe src="index_triforce.html"></iframe>
+
+	<div class="iframe--placeholder">
+		<iframe src="index_triforce.html"></iframe>
+	</div>
+	
 	<ul>
 		<li data-go="simple">Simple geometry</li>
 		<li data-go="alpha">Complex geometry - Alpha</li>
