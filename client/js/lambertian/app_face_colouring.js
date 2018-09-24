@@ -441,9 +441,9 @@ INTERNAL FACES
 		self.gl.vertexAttribPointer(self.prg.aVertexNormal,3,self.gl.FLOAT, false, 0,0);
 		self.gl.enableVertexAttribArray(self.prg.aVertexNormal);
 
-		self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.ColourBuffer);
-		self.gl.vertexAttribPointer(self.prg.aVertexColor,4,self.gl.FLOAT, false, 0,0);
-		self.gl.enableVertexAttribArray(self.prg.aVertexColor);
+		//self.gl.bindBuffer(self.gl.ARRAY_BUFFER, self.ColourBuffer);
+		//self.gl.vertexAttribPointer(self.prg.aVertexColor,4,self.gl.FLOAT, false, 0,0);
+		//self.gl.enableVertexAttribArray(self.prg.aVertexColor);
 		
 		self.gl.bindBuffer(self.gl.ELEMENT_ARRAY_BUFFER, self.IBOBuffer);
 
